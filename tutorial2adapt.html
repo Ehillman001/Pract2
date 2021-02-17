@@ -19,8 +19,9 @@
     require([
       "esri/config",
       "esri/Map",
-      "esri/views/SceneView"
-  ], function(esriConfig,Map, SceneView) {
+      "esri/views/SceneView",
+      "esri/widgets/Locate",
+  ], function(esriConfig,Map, SceneView, Locate) {
 
     esriConfig.apiKey = "AAPK0829df0f0f574ed5afd9d23566d2dd09pswVxwLHZtQFYE9xsspfZ0YNLZpKEU6PxpJ3ne7UK5j2ZBnqpN8fg6rJIBi_QXf8";
 
@@ -34,20 +35,29 @@
       map: map,
       camera: {
         position: {
-          x: -118.808, //Longitude
-          y: 33.961, //Latitude
+          x: -78.3745, //Longitude
+          y: 44.2666, //Latitude
           z: 2000 //Meters
         },
-        tilt: 75
+        tilt: 30
       }
       });
+      const locate = new Locate({
+          view: view,
+          useHeadingEnabled: false,
+          goToOverride: function(view, options) {
+            options.target.scale = 1500;
+            return view.goTo(options.target);
+          }
+        });
+        view.ui.add(locate, "top-left");
    const graphicsLayer = new GraphicsLayer();
    map.add(graphicsLayer);
 
    const point = { //Create a point
       type: "point",
-      longitude: -118.80657463861,
-      latitude: 34.0005930608889
+      longitude: -78.3745,
+      latitude: 44.2666
    };
    const simpleMarkerSymbol = {
       type: "simple-marker",
@@ -59,7 +69,7 @@
     };
     const pointGraphic = new Graphic({
       geometry: point,
-      symbol: simpleMarkerSymbol
+      symbol: simpleMarkerSymbol,
       attributes: attributes,
       popupTemplate: popupTemplate
     });
@@ -71,7 +81,7 @@
     }
     const attributes = {
        Name: "Graphic",
-       Description: "Welcome to the Grand Canyon!"
+       Description: "Fleming College!"
     }
    });
   </script>
